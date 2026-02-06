@@ -8,8 +8,8 @@ The design system is the single source of truth for how the product looks and be
 
 | Layer | What it is | Where it lives |
 |-------|------------|----------------|
-| **1. Tokens** | Colors, spacing, typography, radius, shadow. Named, semantic values. | `src/index.css` (`@theme { ... }`) and Tailwind config if you extend it. |
-| **2. Components** | Reusable UI built *only* on tokens (no one-off hex codes or magic numbers). | `src/components/ui/` (shadcn, plus any custom). |
+| **1. Tokens** | Colors, spacing, typography, radius. Named, semantic values (CSS custom properties). | `src/styles/tokens.css` (LuxKit token set). |
+| **2. Components** | Reusable UI built *only* on tokens (no one-off hex codes or magic numbers). | `src/components/ui/` (styled-components + tokens; no Tailwind/shadcn). |
 | **3. Documentation** | Catalog of components and usage so the team and stakeholders can see and approve. | **Storybook** (`npm run storybook`; build: `npm run build-storybook`). |
 | **4. App** | Screens and flows that use design-system components only. | `src/` (pages, features). |
 
@@ -45,28 +45,24 @@ You can do both: share staging for flows, and a deployed Storybook for the desig
 
 ## Tokens (single source of truth)
 
-Tokens live in **`src/index.css`** under `@theme { }`. Current semantic color tokens include:
+Tokens live in **`src/styles/tokens.css`** (LuxKit). They are CSS custom properties (`:root`). Current sets include:
 
-- `--color-background`, `--color-foreground`
-- `--color-primary`, `--color-primary-foreground`
-- `--color-secondary`, `--color-accent`, `--color-destructive`
-- `--color-input`, `--color-ring`
+- **Colour** – `--palette-*` (e.g. `--palette-highlight-primary-normal-background`, `--palette-destructive-normal-background`)
+- **Border radius** – `--border-radius-xs`, `--border-radius-s`, `--border-radius-m`, `--border-radius-l`, `--border-radius-round`
+- **Spacing** – `--spacing-xs` through `--spacing-xl`
+- **Typography** – `--font-stack`, `--text-size-*`, `--text-line-height-*`, `--font-weight-*`
+- **Icons** – `--svg-icon-size`, `--text-icon-size`
 
-Components reference these (e.g. `bg-primary`, `text-primary-foreground`), not raw hex/oklch in the component. When you need a new color or a new semantic role, add a token first, then use it in components.
+Components reference these variables in **styled-components**; no raw hex/px in design-system components. When you need a new role or scale, add a token first, then use it in components.
 
-You can extend the theme with:
+See **docs/LUXURY_ESCAPES_FRONTEND_AND_DESIGN_SYSTEM_SPEC.md** for the full LuxKit token and component spec.
 
-- **Spacing** – e.g. a scale (`--spacing-1` … `--spacing-12`) if you want consistency.
-- **Radius** – e.g. `--radius-sm`, `--radius-md`, `--radius-lg` for borders/cards.
-- **Typography** – font families and sizes if you want them centralized.
-
-Keep tokens **semantic** (e.g. `primary`, `destructive`) rather than “blue” or “red” so the whole look can change in one place (e.g. dark mode or rebrand).
 
 ---
 
 ## Components and Storybook
 
-- **`src/components/ui/`** – All shared UI (shadcn + custom). These are the only building blocks for app UI; they use tokens and Tailwind only.
+- **`src/components/ui/`** – All shared UI (LuxKit). Built with **styled-components** and tokens only (no Tailwind or shadcn).
 - **Stories** – Next to components or in `src/stories/`. Every component (or at least every public variant) should have a story so the design system is visible and testable in Storybook.
 
 When adding a new component:

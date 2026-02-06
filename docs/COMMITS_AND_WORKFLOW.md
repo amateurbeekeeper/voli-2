@@ -22,7 +22,7 @@ This keeps `main` stable and gives us a clear history and review step.
    git checkout main && git pull
    git checkout -b feat/your-feature-name
    ```
-2. **Do your work** on that branch. Commit often using [Conventional Commits](#commit-format).
+2. **Do your work** on that branch. **Commit often** using [Conventional Commits](#commit-format)—prefer several small, logical commits (e.g. one per feature step or refactor) rather than one large commit at the end.
 3. **Push the branch** and open a **Pull Request** against `main`.
    ```bash
    git push -u origin feat/your-feature-name
