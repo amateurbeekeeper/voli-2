@@ -1,6 +1,6 @@
 # CI/CD Pipeline (full layout)
 
-Nx monorepo with web app + design system (workspace lib, no npm publish). Tests are project-scoped: each project runs its own tests (web: unit, e2e; design-system: unit, Storybook tests). No separate standalone test Docker—tests run as part of each project's pipeline.
+Nx monorepo with web app + design system (workspace lib, no npm publish). Tests are project-scoped: each project runs its own tests (web: unit, e2e; design-system: unit, Storybook tests). 
 
 ---
 
@@ -27,7 +27,7 @@ voli-2/
 
 ## Test model (project-scoped)
 
-Tests live in and belong to their project. No separate "test container"—each project runs its own.
+Tests live in and belong to their project. 
 
 | Project        | Test types              | Commands (e.g.)                    |
 |----------------|-------------------------|------------------------------------|
@@ -80,16 +80,6 @@ Same pattern: lint, build, test self, staging preview, prod on merge.
 
 ---
 
-## No separate test Docker
-
-There is no standalone `test.Dockerfile` or generic test container. Tests run as part of each project:
-
-- **Web app:** Run `web:lint`, `web:build`, `web:test:unit`, `web:test:e2e` in the same job (Node in GH Actions or in the web build Docker context if you want env parity).
-- **Design system:** Run `design-system:lint`, `design-system:build`, `design-system:test:unit`, `design-system:test:storybook` in the same job.
-
-Docker is used for **deployable artifacts** (app image, Storybook image), not for a separate test runner. If you want local/CI parity, each project can define its own build+test in a shared Node image or in the project’s Docker build stage, but tests stay scoped to the project.
-
----
 
 ## Flow summary
 
@@ -127,6 +117,49 @@ You must connect one of these (or similar):
 | **Vercel** | Hosts static/Node apps (less Docker-native)     | Yes       |
 
 **Flow:** GitHub Actions builds the Docker image, pushes to a registry (GHCR, Docker Hub), then triggers the platform to pull and run it—or the platform watches the repo and builds itself. Either way, **the platform is what serves traffic and gives you staging/prod URLs.**
+
+---
+
+## Render setup (how to add it)
+
+1. **Create account:** [render.com](https://render.com) → sign up (GitHub login works).
+
+2. **New Web Service:**
+   - Dashboard → New + → Web Service
+   - Connect your GitHub repo (authorize Render if needed)
+   - Choose the `voli-2` repo
+
+3. **Configure the service:**
+   - **Name:** `voli-2` (or whatever)
+   - **Region:** pick closest to you
+   - **Branch:** `main` (prod deploys from here)
+
+   **Option A – Static Site (simplest):**
+   - **Environment:** Static Site
+   - **Build command:** `npm ci && npm run build`
+   - **Publish directory:** `dist`
+
+   **Option B – Docker:**
+   - **Environment:** Docker
+   - Render uses your root `Dockerfile`. Ensure it exposes port 80 (your `serve` stage does).
+   - If the build stage runs lint/test and they fail, the deploy fails (which is good).
+
+4. **Enable preview environments (PR links):**
+   - Service → Settings → scroll to **Preview Environments**
+   - Enable **Auto-Deploy Previews**
+   - Choose: **Pull Requests** (each PR gets a URL)
+   - Save
+
+5. **Env vars (if needed):**
+   - Service → Environment → add `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, etc.
+   - Use different values for Preview vs Production if needed
+
+6. **Deploy:**
+   - Click **Create Web Service**. Render builds and deploys.
+   - Prod URL: `https://voli-2.onrender.com` (or your custom domain)
+   - PR URL: `https://voli-2-pr-42.onrender.com` (or similar)
+
+Render will auto-deploy on pushes to `main` and on new/updated PRs. No GitHub Actions deploy step needed unless you want to gate deploys behind CI passing.
 
 ---
 
