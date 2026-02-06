@@ -1,1 +1,13 @@
+#!/usr/bin/env sh
+
+# Block commits to main (except the very first commit in the repo) — run first, no husky dependency
+branch=$(git branch --show-current 2>/dev/null)
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+  if git rev-parse HEAD 2>/dev/null >/dev/null; then
+    echo "Cannot commit directly to $branch. Create a branch (e.g. feat/...) and commit there, then open a PR."
+    exit 1
+  fi
+fi
+
+. "$(dirname -- "$0")/_/husky.sh"
 npm run lint && npm run test
