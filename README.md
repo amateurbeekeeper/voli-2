@@ -1,6 +1,23 @@
 # voli-2
 
-React + TypeScript + Vite app with **Storybook**, **Supabase**, **Redux Toolkit**, **shadcn/ui**, and a strong **testing** and **CI** setup.
+React + TypeScript + Vite app with **Storybook**, **Supabase**, **Redux Toolkit**, **styled-components** (LuxKit), and a strong **testing** and **CI** setup.
+
+---
+
+## AI development philosophy
+
+We optimize for **AI visibility and autonomy** so the human is never stuck in a loop.
+
+- **All critical information locally.** Logs (CI, deploy, tests) are fetchable into the workspace. When something fails, the AI can read the logs and fix it—no dead ends.
+- **No stuck loops.** If CI fails → fetch logs → diagnose → fix → test locally → push again. Same for deploys and tests. The AI can do this without the human manually copying logs or guessing.
+- **Less friction = better.** The more the AI can see and do autonomously (fetch logs, run tests, trigger deploys), the less the human has to unblock things.
+
+**Commands that put info where the AI can read it:**
+
+- `npm run ci:fetch-logs` — Pull GitHub Actions run log into `logs/ci-<id>.log` when CI fails.
+- Local runs (lint, build, test, e2e) write to `logs/` automatically. See [docs/LOGGING.md](docs/LOGGING.md).
+
+This philosophy is encoded in [`.cursor/rules/ai-development-philosophy.mdc`](.cursor/rules/ai-development-philosophy.mdc). Add scripts or integrations whenever a failure mode exists where the AI can't access the logs.
 
 ---
 
@@ -25,8 +42,8 @@ A lot of this project will be written or refactored with AI. **Tests and automat
 | Language   | TypeScript          |
 | State      | Redux Toolkit       |
 | Backend    | Supabase            |
-| UI         | shadcn/ui + Tailwind|
-| Component dev / design system | Storybook + `src/components/ui` |
+| UI         | styled-components (LuxKit) + tokens |
+| Component dev / design system | Storybook + `src/components/ui` (LuxKit) |
 | Unit tests | Vitest + React Testing Library |
 | E2E tests  | Playwright          |
 | Lint       | ESLint              |
@@ -98,6 +115,7 @@ So: merge to `main` → deploy workflow runs → prod is updated. See [`.github/
 | [docs/COMMITS_AND_WORKFLOW.md](docs/COMMITS_AND_WORKFLOW.md) | Branch/PR/approval, Conventional Commits, CI/CD, branch protection. |
 | [docs/ENVIRONMENTS.md](docs/ENVIRONMENTS.md) | Local, staging, production; Supabase and Vercel. |
 | [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) | Tokens, components, Storybook; stakeholders. |
+| [docs/CI_CD_PIPELINE.md](docs/CI_CD_PIPELINE.md) | Full CI/CD layout, Render setup, logs. |
 | [.github/README.md](.github/README.md) | GitHub Actions and deploy setup. |
 
 ---
@@ -106,7 +124,7 @@ So: merge to `main` → deploy workflow runs → prod is updated. See [`.github/
 
 ```text
 src/
-  components/ui/   # Design system (shadcn + custom)
+  components/ui/   # Design system (LuxKit, styled-components)
   lib/             # Utils, Supabase client
   store/           # Redux store and slices
   test/            # Vitest setup
@@ -152,7 +170,7 @@ E2E (Playwright) is not run inside this Docker image (it needs browser binaries)
 
 ## Design system
 
-One source of truth for look and feel: **tokens** (`src/index.css` `@theme`) → **components** (`src/components/ui`) → **Storybook** (docs and dev). Same design system in local, staging, and prod. For where this thinking fits (and how to show stakeholders staging vs the component catalog), see [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md).
+One source of truth for look and feel: **tokens** (`src/styles/tokens.css`) → **components** (`src/components/ui`, styled-components) → **Storybook** (docs and dev). Same design system in local, staging, and prod. For where this thinking fits (and how to show stakeholders staging vs the component catalog), see [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md).
 
 ---
 

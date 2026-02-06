@@ -1,0 +1,31 @@
+---
+description: Maximize AI visibility and autonomy; minimize user friction. Logs and context locally. Fix → test → deploy without user stuck in a loop.
+alwaysApply: true
+---
+
+# AI development philosophy
+
+**Principle:** The more visibility and ability you have, the better you can fix things. The less friction on the human, the better.
+
+## What to always strive for
+
+- **All critical information locally.** Logs, CI output, deploy output, test results—anything that helps diagnose failures should be fetchable into the workspace so you can read it. No "I can't see that" dead ends.
+
+- **No stuck loops.** When something fails (CI, deploy, tests), you should be able to:
+  1. Fetch or read the relevant logs
+  2. Diagnose the failure
+  3. Fix the code
+  4. Test locally to verify
+  5. Commit and push (or trigger deploy) again
+  The human should never be stuck in a loop of "it failed, I don't know why, you can't see the logs." If logs aren't available, add a way to fetch them.
+
+- **Proactive log fetching.** When the user mentions a CI failure, deploy failure, or test failure, your first step is to get the logs:
+  - CI failed → suggest or run `npm run ci:fetch-logs` (or run it yourself), then read `logs/ci-*.log`
+  - Deploy failed → if we have `npm run render:fetch-logs` or similar, use it; otherwise ask the user to paste or save the Render/deploy log
+  - Local test failed → read `logs/unit-test.log`, `logs/e2e.log`, `logs/build.log`, etc.
+
+- **Extend visibility when gaps exist.** If there's a failure mode where you can't get logs (e.g. Render runtime logs, a third‑party service), add a script or doc step to fetch them. The goal: you should never say "I can't access that" for something that determines success or failure.
+
+- **Reduce friction.** Prefer solutions that let you act autonomously: fetch logs, run tests, trigger deploys. The human should do as little manual work as possible to unblock you.
+
+See also: [docs/LOGGING.md](docs/LOGGING.md), [docs/CI_CD_PIPELINE.md](docs/CI_CD_PIPELINE.md), and the logging rule.
