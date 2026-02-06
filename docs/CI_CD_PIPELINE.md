@@ -113,6 +113,23 @@ Docker is used for **deployable artifacts** (app image, Storybook image), not fo
 
 ---
 
+## The missing piece: deployment platform
+
+**GitHub Actions does not host your app.** It runs jobs (lint, test, build, push). The thing that actually puts your app live and gives you URLs is a **deployment platform**.
+
+You must connect one of these (or similar):
+
+| Platform   | What it does                                   | Free tier |
+|------------|-------------------------------------------------|-----------|
+| **Railway**| Runs your Docker image, gives you a URL         | Yes       |
+| **Render** | Same; preview envs per PR, prod from main       | Yes       |
+| **Fly.io** | Same; you run `fly deploy` from CI              | Yes       |
+| **Vercel** | Hosts static/Node apps (less Docker-native)     | Yes       |
+
+**Flow:** GitHub Actions builds the Docker image, pushes to a registry (GHCR, Docker Hub), then triggers the platform to pull and run it—or the platform watches the repo and builds itself. Either way, **the platform is what serves traffic and gives you staging/prod URLs.**
+
+---
+
 ## Platform options (where containers run)
 
 | Platform     | Staging        | Prod   |
@@ -126,7 +143,7 @@ Docker is used for **deployable artifacts** (app image, Storybook image), not fo
 ## Logs and debugging CI failures
 
 - **Every CI run** uploads the full run log as an artifact (`ci-logs-<run-id>`). Download from Actions → run → Artifacts.
-- **Fetch into workspace:** Run `npm run ci:fetch-logs` (or `ci:fetch-logs <run-id>`) to pull the latest run's log into `logs/ci-<run-id>.log`. Requires `gh` CLI + `gh auth login`. Cursor can then read that file to see the full failure and fix it.
+- **Fetch into workspace:** Run `npm run ci:fetch-logs` (or `ci:fetch-logs <run-id>`) to pull the latest run's log into `logs/ci-<run-id>.log`. Requires `gh` CLI + `gh auth login`. Cursor can then read that file to see the full failure and fix it. (TODO: update this to put those logs in a sub folder called deployment or ci/cd or something)
 
 ---
 
