@@ -27,7 +27,7 @@ type ConnectMiddleware = (
 export function viteDevLogPlugin() {
   return {
     name: "vite-dev-log",
-    apply: "serve",
+    apply: "serve" as const,
     configureServer(server: { middlewares: { use: (fn: ConnectMiddleware) => void } }) {
       ensureLogDir();
       server.middlewares.use((req: IncomingMessage & { url?: string; method?: string }, res: ServerResponse, next: () => void) => {

@@ -1,0 +1,55 @@
+/**
+ * LuxKit design tokens (CSS custom properties).
+ * Single source of truth for colour, typography, radius, spacing.
+ * @see docs/LUXURY_ESCAPES_FRONTEND_AND_DESIGN_SYSTEM_SPEC.md
+ */
+
+:root {
+  /* Colour – palette (neutral + highlight) */
+  --palette-neutral-default-five: oklch(0.55 0 0);
+  --palette-neutral-default-six: oklch(0.35 0 0);
+  --palette-neutral-default-seven: oklch(0.2 0 0);
+  --palette-neutral-default-eight: oklch(0.1 0 0);
+  --palette-highlight-primary-normal-background: oklch(0.45 0.2 250);
+  --palette-highlight-primary-normal-foreground: oklch(0.99 0 0);
+  --palette-highlight-primary-hover-background: oklch(0.38 0.2 250);
+  --palette-highlight-secondary-normal-background: oklch(0.97 0 0);
+  --palette-highlight-secondary-normal-foreground: oklch(0.2 0 0);
+  --palette-highlight-secondary-hover-background: oklch(0.92 0 0);
+  --palette-destructive-normal-background: oklch(0.55 0.22 25);
+  --palette-destructive-normal-foreground: oklch(0.99 0 0);
+  --palette-destructive-hover-background: oklch(0.48 0.22 25);
+  --palette-outline-default: oklch(0.88 0 0);
+  --palette-background-default: oklch(1 0 0);
+  --palette-foreground-default: oklch(0.15 0 0);
+
+  /* Border radius */
+  --border-radius-xs: 2px;
+  --border-radius-s: 4px;
+  --border-radius-m: 8px;
+  --border-radius-l: 12px;
+  --border-radius-round: 9999px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-s: 8px;
+  --spacing-m: 12px;
+  --spacing-l: 16px;
+  --spacing-xl: 24px;
+
+  /* Typography */
+  --text-line-height: 1.5;
+  --text-icon-size: 1.25rem;
+  --font-stack: "Suisse Int'l", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --text-size-small: 12px;
+  --text-size-medium: 14px;
+  --text-size-large: 16px;
+  --text-line-height-small: 16px;
+  --text-line-height-medium: 20px;
+  --text-line-height-large: 24px;
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+
+  /* Icons */
+  --svg-icon-size: 1.5rem;
+}
