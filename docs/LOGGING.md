@@ -14,6 +14,9 @@ We add **plenty of logging** so we can debug and so **Cursor can see what’s go
 | **`logs/build.log`** | Output from `npm run build` (tsc + Vite). Compile errors, build output. | Overwritten each time you run `npm run build`. |
 | **`logs/unit-test.log`** | Output from `npm run test` (Vitest unit tests). Results, failures, stack traces. | Overwritten each time you run `npm run test`. |
 | **`logs/e2e.log`** | Output from `npm run test:e2e` (Playwright). E2E results and errors. | Overwritten each time you run `npm run test:e2e`. |
+| **`logs/ci-<run-id>.log`** | Full GitHub Actions run log (all jobs, all steps). For debugging CI failures. | Written when you run `npm run ci:fetch-logs` (or `ci:fetch-logs <run-id>`). |
+
+**CI logs:** When CI fails, run `npm run ci:fetch-logs` to pull the latest run’s log into `logs/ci-<id>.log`. Cursor can read that file to see the full failure and fix it. You can also download the `ci-logs-*` artifact from the Actions run. Requires `gh` CLI and `gh auth login`.
 
 Every `npm run lint`, `npm run build`, `npm run test`, and `npm run test:e2e` tees its output to the terminal **and** to the matching log file (overwritten each run). So you can always review what happened, and Cursor can read the right file when something fails and fix it.
 

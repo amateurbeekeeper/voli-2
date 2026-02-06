@@ -123,6 +123,13 @@ Docker is used for **deployable artifacts** (app image, Storybook image), not fo
 
 ---
 
+## Logs and debugging CI failures
+
+- **Every CI run** uploads the full run log as an artifact (`ci-logs-<run-id>`). Download from Actions → run → Artifacts.
+- **Fetch into workspace:** Run `npm run ci:fetch-logs` (or `ci:fetch-logs <run-id>`) to pull the latest run's log into `logs/ci-<run-id>.log`. Requires `gh` CLI + `gh auth login`. Cursor can then read that file to see the full failure and fix it.
+
+---
+
 ## Design system (no npm)
 
 - Lives in `libs/design-system`

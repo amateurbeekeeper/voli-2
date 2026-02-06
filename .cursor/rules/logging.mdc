@@ -14,5 +14,6 @@ alwaysApply: true
   - **`logs/build.log`** – Build output (`npm run build`).
   - **`logs/unit-test.log`** – Unit test output (`npm run test`).
   - **`logs/e2e.log`** – E2E output (`npm run test:e2e`).
+  - **`logs/ci-<run-id>.log`** – Full GitHub Actions run log. Run `npm run ci:fetch-logs` after CI fails to pull it into the workspace so Cursor can read and fix.
 - **When debugging or fixing failures,** read these log files. They give Cursor (and you) the info to fix things. See [docs/LOGGING.md](docs/LOGGING.md).
 - **What to log:** key user actions, API calls (url + result or error), state changes that matter for debugging, and errors with context. Don’t log secrets or full request/response bodies with tokens.

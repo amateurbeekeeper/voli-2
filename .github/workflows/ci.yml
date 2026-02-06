@@ -60,3 +60,22 @@ jobs:
         env:
           CI: true
           PLAYWRIGHT_BASE_URL: http://localhost:4173
+
+  # Always upload full run log as artifact so Cursor/humans can fetch and inspect on failure
+  upload-logs:
+    runs-on: ubuntu-latest
+    needs: [lint-test-build, e2e]
+    if: always()
+    steps:
+      - name: Fetch run logs
+        run: |
+          mkdir -p ci-logs
+          gh run view ${{ github.run_id }} --log > ci-logs/ci-run.log 2>&1 || echo "Log fetch failed" >> ci-logs/ci-run.log
+          echo "--- Run: ${{ github.run_id }} | Workflow: ${{ github.workflow }} | Conclusion: ${{ job.status }} ---" >> ci-logs/ci-run.log
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-logs-${{ github.run_id }}
+          path: ci-logs/
