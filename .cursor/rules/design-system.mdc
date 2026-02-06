@@ -1,0 +1,12 @@
+---
+description: Use design tokens and components from the design system; document in Storybook
+globs: "src/**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Design system
+
+- **Tokens** live in `src/index.css` (`@theme { }`). Use semantic tokens (e.g. `primary`, `destructive`, `background`) in components; do not introduce one-off colors or spacing unless they are added as new tokens first.
+- **UI** must be built from `src/components/ui/` (shadcn + custom). Prefer existing components and variants; if something new is needed, add it under `components/ui/` and use tokens only.
+- **Storybook**: when adding or changing a component in `components/ui/`, add or update a story so the design system stays documented. Use existing stories as the pattern.
+- The same design system is used in local, staging, and production; environments only change deployment and data (see docs/ENVIRONMENTS.md and docs/DESIGN_SYSTEM.md).

@@ -1,0 +1,18 @@
+---
+description: Add plenty of logging; all logs go to logs/ so Cursor can read them and fix things
+alwaysApply: true
+---
+
+# Logging
+
+- **Add a lot of logging** so we can debug and so Cursor can see what’s going on. Prefer structured logs (message + optional data object) over one-off console.logs.
+- **Use the app logger** from `@/lib/logger` in browser code: `logger.info()`, `logger.warn()`, `logger.error()`, `logger.log()`. Don’t use raw `console.*` for app behaviour.
+- **Where logs go (all overwritten each run, so Cursor can always see the latest):**
+  - **`logs/dev-server.log`** – Dev server terminal output (`npm run dev`).
+  - **`logs/dev-browser.log`** – Browser logs from the app (logger).
+  - **`logs/lint.log`** – Lint output (`npm run lint`).
+  - **`logs/build.log`** – Build output (`npm run build`).
+  - **`logs/unit-test.log`** – Unit test output (`npm run test`).
+  - **`logs/e2e.log`** – E2E output (`npm run test:e2e`).
+- **When debugging or fixing failures,** read these log files. They give Cursor (and you) the info to fix things. See [docs/LOGGING.md](docs/LOGGING.md).
+- **What to log:** key user actions, API calls (url + result or error), state changes that matter for debugging, and errors with context. Don’t log secrets or full request/response bodies with tokens.

@@ -1,0 +1,13 @@
+---
+description: Work only on branches; never commit to main; commit often; use Conventional Commits
+alwaysApply: true
+---
+
+# Branch and PR workflow
+
+- **Never suggest or perform commits to `main`.** All work must be done on a branch.
+- When the user is implementing a feature or fix, remind or assume they are on a branch (e.g. `feat/feature-name` or `fix/bug-name`). If they ask to commit, suggest committing to the current branch and opening a PR to merge into `main`.
+- One feature (or fix) = one branch. When the change is ready, the flow is: push branch → open Pull Request → get approval → merge. CI must pass on the PR.
+- **Commit every change (Cursor):** When Cursor makes a code or doc change, it **must commit** that change (on the current branch) before moving on. Do not batch many edits into one commit; commit change-by-change so each commit is one coherent edit with a clear message. If the user made the edit, suggest they commit; if Cursor made the edit, Cursor should run the commit with a structured message.
+- **Commit format (enforced):** Every commit must follow Conventional Commits. First line: `type(scope?): description` (lower-case subject, max 100 chars). Then a **detailed body** (required): what changed, why, and any decisions. Commitlint (Husky `commit-msg` hook) rejects commits that don’t match. These detailed messages are our decision log.
+- Full policy: [docs/COMMITS_AND_WORKFLOW.md](docs/COMMITS_AND_WORKFLOW.md).

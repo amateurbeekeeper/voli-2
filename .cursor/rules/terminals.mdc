@@ -1,0 +1,11 @@
+---
+description: Always run commands in a new workspace terminal; never run in chat; keep terminals visible to Cursor but out of the user's face
+alwaysApply: true
+---
+
+# Terminals: how to run commands
+
+- **Never ask the user to run commands in the chat.** Commands that get pasted or run in chat often get stuck. Always use the **run command** capability to execute in a **terminal**.
+- **Prefer a new terminal** for each command (or a fresh run) so previous state or long-running processes don't cause commands to hang. Do not assume an existing terminal is safe to reuse for a new command.
+- **Run inside the Cursor workspace** (the integrated terminal), not in an external app like iTerm. Terminals created by Cursor in the workspace are visible to the AI so it can read output and react. The user can **minimize or hide the terminal panel** (or move it to a tab) so it's not in their face—the terminal still exists and Cursor can still see it.
+- If the user explicitly wants something in an external terminal (e.g. iTerm), they can run it themselves; for agent-driven commands, use the workspace terminal so output is visible to the agent.
