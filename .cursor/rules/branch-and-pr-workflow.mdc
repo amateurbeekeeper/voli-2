@@ -1,13 +1,18 @@
 ---
-description: Work only on branches; never commit to main; commit often; use Conventional Commits
+description: Golden rule — after every task that changes the codebase, commit with a detailed message before the turn ends. Work on branches only; never commit to main.
 alwaysApply: true
 ---
 
 # Branch and PR workflow
 
+## Golden rule (Cursor)
+
+**After every user message that results in codebase changes: before the turn ends, write a detailed commit and run the commit.** Do not wait for the user to ask. The repo must always have a commit that records what was done and why. If the user messages you and you change files, your last step in that same turn is to commit those changes with a structured message (Conventional Commits + detailed body). No exceptions.
+
+---
+
 - **Never suggest or perform commits to `main`.** All work must be done on a branch.
 - When the user is implementing a feature or fix, remind or assume they are on a branch (e.g. `feat/feature-name` or `fix/bug-name`). If they ask to commit, suggest committing to the current branch and opening a PR to merge into `main`.
 - One feature (or fix) = one branch. When the change is ready, the flow is: push branch → open Pull Request → get approval → merge. CI must pass on the PR.
-- **Commit every change (Cursor):** When Cursor makes a code or doc change, it **must commit** that change (on the current branch) before moving on. Do not batch many edits into one commit; commit change-by-change so each commit is one coherent edit with a clear message. Prefer at least two commits for multi-step work (e.g. code + docs, or add feature then wire it up). If the user made the edit, suggest they commit; if Cursor made the edit, Cursor should run the commit with a structured message.
 - **Commit format (enforced):** Every commit must follow Conventional Commits. First line: `type(scope?): description` (lower-case subject, max 100 chars). Then a **detailed body** (required): what changed, why, and any decisions. Commitlint (Husky `commit-msg` hook) rejects commits that don’t match. These detailed messages are our decision log.
 - Full policy: [docs/COMMITS_AND_WORKFLOW.md](docs/COMMITS_AND_WORKFLOW.md).

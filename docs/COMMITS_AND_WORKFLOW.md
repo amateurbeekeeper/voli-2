@@ -67,7 +67,7 @@ feat(auth): add login form
 
 **Enforcement:** [commitlint](https://commitlint.js.org/) runs on every `git commit` via the Husky `commit-msg` hook (see [.husky/commit-msg](../.husky/commit-msg) and [commitlint.config.js](../commitlint.config.js)). It rejects commits that don’t match the **first line** format or that have an **empty body**. The body is free form but must be present.
 
-**Commit every change (Cursor):** When Cursor makes a code or doc change, it must commit that change (on the current branch) before moving on—change-by-change, not batched. Each commit is one coherent edit with a structured message. For human-made edits, the human commits (or Cursor can suggest).
+**Golden rule (Cursor):** After every user message that results in codebase changes, Cursor must **write a detailed commit and run the commit before the turn ends**. Do not wait for the user to ask. The repo must always have a commit that records what was done and why. So: user messages → Cursor does work → if the work changed files, Cursor’s last step is to commit those changes (Conventional Commits + detailed body). For human-made edits, the human commits (or Cursor can suggest).
 
 **Commit structure (enforced):** Commitlint runs on every `git commit` and rejects messages that don’t follow the first-line format or that have an empty body. So every commit (from Cursor or human) must use the structure above.
 
