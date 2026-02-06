@@ -22,6 +22,8 @@
     "suite:e2e": "npm run suite && npm run test:e2e",
     "docker:verify": "docker build --target verify -t voli-2-verify .",
     "ci:fetch-logs": "node scripts/fetch-ci-logs.mjs",
+    "render:fetch-logs": "node scripts/render-fetch-logs.mjs",
+    "render:fetch-logs:runtime": "node scripts/render-fetch-logs.mjs --runtime",
     "prepare": "husky"
   },
   "dependencies": {

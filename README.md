@@ -15,6 +15,8 @@ We optimize for **AI visibility and autonomy** so the human is never stuck in a 
 **Commands that put info where the AI can read it:**
 
 - `npm run ci:fetch-logs` — Pull GitHub Actions run log into `logs/ci-<id>.log` when CI fails.
+- `npm run render:fetch-logs` — Pull Render deploy status + build logs after a deploy.
+- `npm run render:fetch-logs:runtime` — Pull Render live staging app logs (ad-hoc).
 - Local runs (lint, build, test, e2e) write to `logs/` automatically. See [docs/LOGGING.md](docs/LOGGING.md).
 
 This philosophy is encoded in [`.cursor/rules/ai-development-philosophy.mdc`](.cursor/rules/ai-development-philosophy.mdc). Add scripts or integrations whenever a failure mode exists where the AI can't access the logs.
