@@ -1,0 +1,62 @@
+# Build run started 2026-02-06T23:42:41.309Z
+
+(node:9652) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ NX   Running target build for project core-web-app and 1 task it depends on:
+
+- core-web-app
+
+
+
+> nx run design-system:build  [existing outputs match the cache, left as is]
+
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 3 modules transformed.
+rendering chunks...
+
+[vite:dts] Start generate declaration files...
+[96msrc/lib/button.tsx[0m:[93m133[0m:[93m82[0m - [91merror[0m[90m TS2322: [0mType 'Element' is not assignable to type 'ReactNode'.
+
+[7m133[0m   ({ variant = 'default', size = 'default', type = 'button', ...props }, ref) => (
+[7m   [0m [91m                                                                                 ~[0m
+[7m134[0m     <StyledButton ref={ref} type={type} $variant={variant} $size={size} {...props} />
+[7m   [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m135[0m   )
+[7m   [0m [91m~~~[0m
+
+  [96m../../node_modules/@types/react/index.d.ts[0m:[93m1102[0m:[93m15[0m
+    [7m1102[0m     interface ForwardRefRenderFunction<T, P = {}> {
+    [7m    [0m [96m              ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    The expected type comes from the return type of this signature.
+
+computing gzip size...
+../../dist/libs/design-system/index.css  1.46 kB │ gzip: 0.45 kB
+../../dist/libs/design-system/index.mjs  3.54 kB │ gzip: 0.88 kB
+[vite:dts] Declaration files built in 595ms.
+
+✓ built in 643ms
+
+> nx run core-web-app:build  [existing outputs match the cache, left as is]
+
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 59 modules transformed.
+rendering chunks...
+computing gzip size...
+../../dist/apps/core-web-app/index.html                   0.48 kB │ gzip:  0.30 kB
+../../dist/apps/core-web-app/assets/index-BJXTafgj.css    1.61 kB │ gzip:  0.54 kB
+../../dist/apps/core-web-app/assets/index-B1NzLLPi.js   249.22 kB │ gzip: 81.33 kB
+✓ built in 586ms
+
+
+
+ NX   Successfully ran target build for project core-web-app and 1 task it depends on
+
+Nx read the output from the cache instead of running the command for 2 out of 2 tasks.
+

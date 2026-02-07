@@ -12,7 +12,7 @@ fs.mkdirSync(path.dirname(logPath), { recursive: true });
 fs.writeFileSync(logPath, `# Build run started ${new Date().toISOString()}\n\n`, "utf8");
 const logStream = fs.createWriteStream(logPath, { flags: "a" });
 
-const child = spawn("npm", ["run", "build:raw"], {
+const child = spawn("npx", ["nx", "run-many", "-t", "build", "-p", "core-web-app"], {
   cwd: root,
   stdio: ["inherit", "pipe", "pipe"],
   shell: true,

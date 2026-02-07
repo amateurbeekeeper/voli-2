@@ -12,7 +12,7 @@ fs.mkdirSync(path.dirname(logPath), { recursive: true });
 fs.writeFileSync(logPath, `# Unit test run started ${new Date().toISOString()}\n\n`, "utf8");
 const logStream = fs.createWriteStream(logPath, { flags: "a" });
 
-const child = spawn("npx", ["vitest", "run", "--project=unit"], {
+const child = spawn("npx", ["nx", "run-many", "-t", "test", "--skip-nx-cache"], {
   cwd: root,
   stdio: ["inherit", "pipe", "pipe"],
   shell: true,

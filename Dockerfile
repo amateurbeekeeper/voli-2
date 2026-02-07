@@ -15,6 +15,6 @@ RUN npm run lint && npm run test && npm run build
 
 # Optional: serve the built app (for production or "run like prod" locally)
 FROM nginx:alpine AS serve
-COPY --from=verify /app/dist /usr/share/nginx/html
+COPY --from=verify /app/dist/apps/core-web-app /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

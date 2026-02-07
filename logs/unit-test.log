@@ -1,0 +1,31 @@
+# Unit test run started 2026-02-06T23:42:37.504Z
+
+(node:9379) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ NX   Running target test for project core-web-app:
+
+- core-web-app
+
+
+
+> nx run core-web-app:test
+
+> vitest
+
+
+ RUN  v4.0.18 /Users/james/code/voli-2/apps/core-web-app
+
+ ✓ src/app/app.test.tsx (1 test) 96ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  10:42:39
+   Duration  1.32s (transform 189ms, setup 107ms, import 298ms, tests 96ms, environment 707ms)
+
+
+
+
+ NX   Successfully ran target test for project core-web-app
+
+

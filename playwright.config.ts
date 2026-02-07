@@ -12,15 +12,15 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:4173",
+    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:4200",
     trace: "on-first-retry",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: process.env.CI
     ? undefined
     : {
-        command: "npm run preview",
-        url: "http://localhost:4173",
+        command: "npx nx run core-web-app:preview",
+        url: "http://localhost:4200",
         reuseExistingServer: !process.env.CI,
       },
 });

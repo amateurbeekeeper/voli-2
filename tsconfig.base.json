@@ -1,0 +1,11 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["apps/core-web-app/src/*"],
+      "@voli/design-system": ["libs/design-system/src/index.ts"]
+    },
+    "skipLibCheck": true
+  }
+}

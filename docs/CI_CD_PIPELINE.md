@@ -122,44 +122,72 @@ You must connect one of these (or similar):
 
 ## Render setup (how to add it)
 
-1. **Create account:** [render.com](https://render.com) → sign up (GitHub login works).
+You need **two Web Services** (one for the app, one for Storybook). Both use Docker and the same repo.
 
-2. **New Web Service:**
-   - Dashboard → New + → Web Service
-   - Connect your GitHub repo (authorize Render if needed)
-   - Choose the `voli-2` repo
+**Account:** [render.com](https://render.com) → sign up (GitHub login works). Connect the `voli-2` repo when prompted.
 
-3. **Configure the service:**
-   - **Name:** `voli-2` (or whatever)
-   - **Region:** pick closest to you
-   - **Branch:** `main` (prod deploys from here)
+---
 
-   **Option A – Static Site (simplest):**
-   - **Environment:** Static Site
-   - **Build command:** `npm ci && npm run build`
-   - **Publish directory:** `dist`
+### Service 1: Web app (core-web-app)
 
-   **Option B – Docker:**
-   - **Environment:** Docker
-   - Render uses your root `Dockerfile`. Ensure it exposes port 80 (your `serve` stage does).
-   - If the build stage runs lint/test and they fail, the deploy fails (which is good).
+1. **New → Web Service** → select repo `voli-2`.
+2. **Configure:**
+   - **Name:** e.g. `voli-2` or `voli-2-web`
+   - **Region:** pick one
+   - **Branch:** `main`
+   - **Environment:** **Docker**
+   - **Dockerfile path:** `docker/web.Dockerfile`
+   - **Docker context:** root (leave default; Render builds from repo root).
+3. **Preview environments:** Settings → **Preview Environments** → enable **Auto-Deploy Previews** for **Pull Requests**. Save.
+4. **Env vars (if you use Supabase):** Environment → add:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`  
+   You can set different values for Preview vs Production.
+5. **Create Web Service.** Prod: `https://<service-name>.onrender.com`. PRs get a preview URL like `https://<service-name>-pr-123.onrender.com`.
 
-4. **Enable preview environments (PR links):**
-   - Service → Settings → scroll to **Preview Environments**
-   - Enable **Auto-Deploy Previews**
-   - Choose: **Pull Requests** (each PR gets a URL)
-   - Save
+---
 
-5. **Env vars (if needed):**
-   - Service → Environment → add `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, etc.
-   - Use different values for Preview vs Production if needed
+### Service 2: Storybook (design-system)
 
-6. **Deploy:**
-   - Click **Create Web Service**. Render builds and deploys.
-   - Prod URL: `https://voli-2.onrender.com` (or your custom domain)
-   - PR URL: `https://voli-2-pr-42.onrender.com` (or similar)
+1. **New → Web Service** → same repo `voli-2`.
+2. **Configure:**
+   - **Name:** e.g. `voli-2-storybook`
+   - **Region:** same as web app (optional)
+   - **Branch:** `main`
+   - **Environment:** **Docker**
+   - **Dockerfile path:** `docker/storybook.Dockerfile`
+   - **Docker context:** root
+3. **Preview environments:** Enable **Auto-Deploy Previews** for **Pull Requests**. Save.
+4. **Create Web Service.** No env vars needed unless you add them later.
 
-Render will auto-deploy on pushes to `main` and on new/updated PRs. No GitHub Actions deploy step needed unless you want to gate deploys behind CI passing.
+---
+
+### What you don’t need to provide yet
+
+- **No API keys for “Render in CI”** — Render will build and deploy from GitHub (watch repo + branch). Our GitHub Actions already run lint/test/build and Docker build; they don’t push to Render. Deploys are triggered by Render when you push or open a PR.
+- **Secrets** — Only add Supabase (or other) env vars in the Render dashboard for the **web app** service if the app needs them at build or runtime.
+
+When you’re ready to wire Render, create the two services above; if you hit a snag (e.g. Dockerfile path, branch, or env vars), share what you see and we can adjust.
+
+---
+
+### Linking Render to GitHub Actions (deploy only when CI passes)
+
+CI is now wired so that **after** lint, test, build, and E2E pass on a **push to main**, it can trigger a Render deploy. That way prod only updates when CI is green.
+
+**What you add in GitHub:**
+
+1. Repo → **Settings → Secrets and variables → Actions**
+2. Add two secrets (get the URLs from Render):
+   - **`RENDER_DEPLOY_HOOK_WEB`** — Web app service: Render Dashboard → your web service → **Settings** → **Deploy Hook** → copy the URL
+   - **`RENDER_DEPLOY_HOOK_STORYBOOK`** — Storybook service: same, copy its Deploy Hook URL
+
+Once those are set, every **push to main** that passes CI will trigger a deploy of both services. PRs do not trigger these; they only run on `main` (or `master`).
+
+**“One [preview] for every branch”**
+
+- **Prod:** One deploy for `main` (triggered by Actions when CI passes, as above).
+- **Previews:** In the Render dashboard, for each service turn on **Preview Environments** and set them to **Pull Requests**. Then every **pull request** gets its own preview URL (e.g. `voli-2-web-pr-42.onrender.com`). So you get one preview per branch that has a PR. Render doesn’t create a separate preview for every branch push without a PR; previews are per pull request.
 
 ---
 

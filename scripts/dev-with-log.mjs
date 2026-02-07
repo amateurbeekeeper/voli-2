@@ -20,7 +20,7 @@ const browserLogPath = path.join(logsDir, "dev-browser.log");
 fs.writeFileSync(browserLogPath, `# Browser log (this session) ${new Date().toISOString()}\n\n`, "utf8");
 const logStream = fs.createWriteStream(logPath, { flags: "a" });
 
-const child = spawn("npx", ["vite"], {
+const child = spawn("npx", ["nx", "run", "core-web-app:dev"], {
   cwd: root,
   stdio: ["inherit", "pipe", "pipe"],
   shell: true,

@@ -32,3 +32,20 @@
 - Connect Supabase.
 - Process / working-with-AI / .cursor/rules improvements for workflow.
 - Accessibility.
+
+
+these were my hand written notes (please do not remove them)
+main:
+- nx'ise the repo
+- get ci-cd/ docker working
+- get hosting working - render
+
+next:
+- test full flow/ flows
+- figure out what types of tests i really want 
+
+other:
+- create componets with ai and then tweak them manually. fill out our inital component library
+- connect supa base
+- are there any other process, working-with-ai, .cursor/rules kinda stuff you can tell me to improve my workflow
+- accessability
