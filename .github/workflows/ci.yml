@@ -106,11 +106,11 @@ jobs:
   # Deploy to Render when CI passes: trigger via API, wait for success/failure.
   # If Render deploy fails, this job fails and the Actions run shows red.
   # Requires: RENDER_API_KEY, RENDER_CORE_WEB_APP_SERVICE_ID, RENDER_SERVICE_ID_STORYBOOK (repo secrets).
-  # Skipped when secrets are not set.
+  # Script exits 0 (skips) when secrets are not set.
   deploy-render-web:
     runs-on: ubuntu-latest
     needs: [lint-test-build, e2e]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && secrets.RENDER_API_KEY != ''
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     steps:
       - uses: actions/checkout@v4
 
@@ -123,7 +123,7 @@ jobs:
   deploy-render-storybook:
     runs-on: ubuntu-latest
     needs: [lint-test-build]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && secrets.RENDER_API_KEY != ''
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     steps:
       - uses: actions/checkout@v4
 

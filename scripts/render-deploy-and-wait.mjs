@@ -13,9 +13,8 @@ const serviceId = process.argv[2] || process.env.RENDER_CORE_WEB_APP_SERVICE_ID 
 const apiKey = process.env.RENDER_API_KEY;
 
 if (!apiKey || !serviceId) {
-  console.error('Need RENDER_API_KEY and RENDER_CORE_WEB_APP_SERVICE_ID (or RENDER_SERVICE_ID) in env or arg.');
-  console.error('Usage: RENDER_CORE_WEB_APP_SERVICE_ID=srv-xxx node render-deploy-and-wait.mjs');
-  process.exit(1);
+  console.log('RENDER_API_KEY or service ID not set — skipping deploy (set GitHub secrets to enable).');
+  process.exit(0);
 }
 
 const BASE = 'https://api.render.com/v1';
