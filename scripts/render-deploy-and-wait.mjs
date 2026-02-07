@@ -13,7 +13,8 @@ const serviceId = process.argv[2] || process.env.RENDER_CORE_WEB_APP_SERVICE_ID 
 const apiKey = process.env.RENDER_API_KEY;
 
 if (!apiKey || !serviceId) {
-  console.log('RENDER_API_KEY or service ID not set — skipping deploy (set GitHub secrets to enable).');
+  console.log('RENDER_API_KEY or service ID not set — skipping deploy.');
+  console.log('See docs/RENDER_SETUP.md for adding GitHub secrets.');
   process.exit(0);
 }
 

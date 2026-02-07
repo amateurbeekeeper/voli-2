@@ -7,6 +7,7 @@
  *   npm run render:fetch-logs           # deploy status + deploy logs (latest)
  *   npm run render:fetch-logs --runtime # runtime logs from live app (ad-hoc)
  */
+import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,20 +15,6 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const logsDir = path.join(root, 'logs', 'render');
-
-// Load .env if present
-try {
-  const envPath = path.join(root, '.env');
-  if (fs.existsSync(envPath)) {
-    const content = fs.readFileSync(envPath, 'utf-8');
-    for (const line of content.split('\n')) {
-      const m = line.match(/^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/);
-      if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '').trim();
-    }
-  }
-} catch {
-  /* ignore */
-}
 fs.mkdirSync(logsDir, { recursive: true });
 
 const apiKey = process.env.RENDER_API_KEY;

@@ -142,7 +142,7 @@ ci: run e2e on pr
 - **CI** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) – On every push and every PR: lint, unit tests, build (web + Storybook), E2E, Docker build. On push to `main`, triggers Render deploy and **waits for success/failure** (requires `RENDER_API_KEY`, `RENDER_CORE_WEB_APP_SERVICE_ID`, `RENDER_SERVICE_ID_STORYBOOK`).
 - **Deploy** ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) – Only on push to `main`. Deploys to **Vercel** (requires `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`).
 
-For **Render** (Docker services) and deploy flow, see [docs/CI_CD_PIPELINE.md](docs/CI_CD_PIPELINE.md).
+For **Render** (Docker services): [docs/RENDER_SETUP.md](docs/RENDER_SETUP.md) (credentials, secrets), [docs/CI_CD_PIPELINE.md](docs/CI_CD_PIPELINE.md) (flow).
 
 ---
 

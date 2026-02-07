@@ -29,6 +29,7 @@
     "render:fetch-logs": "node scripts/render-fetch-logs.mjs",
     "render:fetch-logs:runtime": "node scripts/render-fetch-logs.mjs --runtime",
     "render:deploy-and-wait": "node scripts/render-deploy-and-wait.mjs",
+    "render:validate-setup": "node scripts/render-validate-setup.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -74,6 +75,7 @@
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/ui": "^4.0.0",
     "ajv": "^8.0.0",
+    "dotenv": "^17.2.4",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
