@@ -20,7 +20,7 @@ We add **plenty of logging** so we can debug and so **Cursor can see what’s go
 
 **CI logs:** When CI fails, run `npm run ci:fetch-logs` to pull the latest run’s log into `logs/ci-<id>.log`. Cursor can read that file to see the full failure and fix it. You can also download the `ci-logs-*` artifact from the Actions run. Requires `gh` CLI and `gh auth login`.
 
-**Render logs:** Set `RENDER_API_KEY` and `RENDER_SERVICE_ID` in `.env`. After a deploy, run `npm run render:fetch-logs` to get build status and logs. For live staging app logs, run `npm run render:fetch-logs:runtime`.
+**Render logs:** Set `RENDER_API_KEY` and `RENDER_CORE_WEB_APP_SERVICE_ID` in `.env`. After a deploy, run `npm run render:fetch-logs` to get build status and logs. For live staging app logs, run `npm run render:fetch-logs:runtime`.
 
 Every `npm run lint`, `npm run build`, `npm run test`, and `npm run test:e2e` tees its output to the terminal **and** to the matching log file (overwritten each run). So you can always review what happened, and Cursor can read the right file when something fails and fix it.
 

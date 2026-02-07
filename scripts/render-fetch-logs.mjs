@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Fetch Render deploy status + build logs, or runtime logs from live staging app.
- * Requires: RENDER_API_KEY, RENDER_SERVICE_ID (from env or .env).
+ * Requires: RENDER_API_KEY, RENDER_CORE_WEB_APP_SERVICE_ID (or RENDER_SERVICE_ID) from env or .env.
  *
  * Usage:
  *   npm run render:fetch-logs           # deploy status + deploy logs (latest)
@@ -31,10 +31,10 @@ try {
 fs.mkdirSync(logsDir, { recursive: true });
 
 const apiKey = process.env.RENDER_API_KEY;
-const serviceId = process.env.RENDER_SERVICE_ID;
+const serviceId = process.env.RENDER_CORE_WEB_APP_SERVICE_ID || process.env.RENDER_SERVICE_ID;
 
 if (!apiKey || !serviceId) {
-  console.error('Need RENDER_API_KEY and RENDER_SERVICE_ID in env (or .env).');
+  console.error('Need RENDER_API_KEY and RENDER_CORE_WEB_APP_SERVICE_ID (or RENDER_SERVICE_ID) in env (or .env).');
   console.error('Get API key: Render Dashboard → Account Settings → API Keys');
   console.error('Service ID: Render Dashboard → Your Service → URL has .../srv-xxx');
   process.exit(1);

@@ -6,12 +6,14 @@ CI and automation for this repo live here.
 
 | File | What it does |
 |------|----------------|
-| [workflows/ci.yml](workflows/ci.yml) | Runs the **full suite** (lint, unit tests, build, E2E) on **every push to any branch** and every PR targeting `main`/`master`. |
-| [workflows/deploy.yml](workflows/deploy.yml) | Runs **only on push to `main`/`master`** (i.e. after a merge). Deploys to **production** (Vercel). |
+| [workflows/ci.yml](workflows/ci.yml) | Runs the **full suite** (lint, unit tests, build, E2E, Docker build) on every push/PR. On push to `main`, also triggers Render deploy and **waits for success/failure** (see Render secrets below). |
+| [workflows/deploy.yml](workflows/deploy.yml) | Runs **only on push to `main`/`master`**. Deploys to **Vercel** (optional). |
 
-**Flow:** Branch → PR → CI passes → approval → merge to `main` → deploy workflow runs → prod is updated.
+**Flow:** Branch → PR → CI passes → approval → merge to `main` → CI runs again, triggers Render deploy, waits for Render to finish. If Render fails, the CI run fails.
 
-**Deploy setup:** Add these repo secrets in **Settings → Secrets and variables → Actions** so [workflows/deploy.yml](workflows/deploy.yml) can deploy to Vercel:
+**Render deploy (CI):** Add these secrets for deploy-and-wait: `RENDER_API_KEY`, `RENDER_CORE_WEB_APP_SERVICE_ID`, `RENDER_SERVICE_ID_STORYBOOK`. See [docs/CI_CD_PIPELINE.md](../docs/CI_CD_PIPELINE.md).
+
+**Vercel deploy (optional):** Add these repo secrets so [workflows/deploy.yml](workflows/deploy.yml) can deploy to Vercel:
 
 - `VERCEL_TOKEN` – [Vercel token](https://vercel.com/account/tokens)
 - `VERCEL_ORG_ID` – Team or user ID (from Vercel project settings or `vercel link` + `.vercel/project.json`)

@@ -28,6 +28,7 @@
     "ci:fetch-logs": "node scripts/fetch-ci-logs.mjs",
     "render:fetch-logs": "node scripts/render-fetch-logs.mjs",
     "render:fetch-logs:runtime": "node scripts/render-fetch-logs.mjs --runtime",
+    "render:deploy-and-wait": "node scripts/render-deploy-and-wait.mjs",
     "prepare": "husky"
   },
   "dependencies": {

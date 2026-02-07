@@ -173,16 +173,21 @@ When you’re ready to wire Render, create the two services above; if you hit a 
 
 ### Linking Render to GitHub Actions (deploy only when CI passes)
 
-CI is now wired so that **after** lint, test, build, and E2E pass on a **push to main**, it can trigger a Render deploy. That way prod only updates when CI is green.
+CI is wired so that **after** lint, test, build, and E2E pass on a **push to main**, it triggers a Render deploy via the Render API, then **waits until the deploy completes**. If Render reports success → Actions run is green. If Render deploy fails → Actions run fails. No more fire-and-forget: the CI status reflects the actual deploy outcome.
 
 **What you add in GitHub:**
 
 1. Repo → **Settings → Secrets and variables → Actions**
-2. Add two secrets (get the URLs from Render):
-   - **`RENDER_DEPLOY_HOOK_WEB`** — Web app service: Render Dashboard → your web service → **Settings** → **Deploy Hook** → copy the URL
-   - **`RENDER_DEPLOY_HOOK_STORYBOOK`** — Storybook service: same, copy its Deploy Hook URL
+2. Add these secrets:
+   - **`RENDER_API_KEY`** — Render Dashboard → Account Settings → API Keys → create key
+   - **`RENDER_CORE_WEB_APP_SERVICE_ID`** — Web app: Render Dashboard → your web service → URL has `.../srv-xxx`
+   - **`RENDER_SERVICE_ID_STORYBOOK`** — Storybook: same, from the Storybook service
 
-Once those are set, every **push to main** that passes CI will trigger a deploy of both services. PRs do not trigger these; they only run on `main` (or `master`).
+Once those are set, every **push to main** that passes CI will trigger deploys for both services. The deploy job polls Render every 15s until status is `live` or `failed`. PRs do not trigger deploys; only `main` (or `master`).
+
+**Local/debug:** Run `npm run render:deploy-and-wait` with `RENDER_CORE_WEB_APP_SERVICE_ID` set to test the web app. Use `npm run render:fetch-logs` to pull deploy logs (add `RENDER_API_KEY` and `RENDER_CORE_WEB_APP_SERVICE_ID` to `.env`).
+
+**Overlapping deploys:** If Render says "Another deploy started. To avoid canceling active deploys…", go to each service → **Settings** → **Overlapping Deploy Policy**. Use **Queue deploys** so a new trigger waits for the current deploy to finish. If you use CI to trigger deploys, turn **off** Auto-Deploy on Render so only CI triggers; otherwise you get double deploys and cancellations.
 
 **“One [preview] for every branch”**
 

@@ -103,33 +103,35 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # Trigger Render deploy only when CI passes (optional: add secrets in repo Settings)
-  # Prod: runs on push to main. Previews: Render creates per-PR previews when you enable them in the dashboard.
-  trigger-render-web:
+  # Deploy to Render when CI passes: trigger via API, wait for success/failure.
+  # If Render deploy fails, this job fails and the Actions run shows red.
+  # Requires: RENDER_API_KEY, RENDER_CORE_WEB_APP_SERVICE_ID, RENDER_SERVICE_ID_STORYBOOK (repo secrets).
+  # Skipped when secrets are not set.
+  deploy-render-web:
     runs-on: ubuntu-latest
     needs: [lint-test-build, e2e]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && secrets.RENDER_API_KEY != ''
     steps:
-      - name: Trigger Render deploy (web app)
-        run: |
-          if [ -n "${{ secrets.RENDER_DEPLOY_HOOK_WEB }}" ]; then
-            curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_WEB }}"
-          else
-            echo "RENDER_DEPLOY_HOOK_WEB not set — skip triggering deploy"
-          fi
+      - uses: actions/checkout@v4
 
-  trigger-render-storybook:
+      - name: Deploy to Render (web app) and wait
+        run: node scripts/render-deploy-and-wait.mjs
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_CORE_WEB_APP_SERVICE_ID: ${{ secrets.RENDER_CORE_WEB_APP_SERVICE_ID }}
+
+  deploy-render-storybook:
     runs-on: ubuntu-latest
     needs: [lint-test-build]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && secrets.RENDER_API_KEY != ''
     steps:
-      - name: Trigger Render deploy (Storybook)
-        run: |
-          if [ -n "${{ secrets.RENDER_DEPLOY_HOOK_STORYBOOK }}" ]; then
-            curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_STORYBOOK }}"
-          else
-            echo "RENDER_DEPLOY_HOOK_STORYBOOK not set — skip triggering deploy"
-          fi
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Render (Storybook) and wait
+        run: node scripts/render-deploy-and-wait.mjs
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID_STORYBOOK }}
 
   upload-logs:
     runs-on: ubuntu-latest
